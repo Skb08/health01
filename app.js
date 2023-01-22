@@ -26,15 +26,15 @@ app.use(bodyParser.json());
 app.use(cookie());
 
 
-// mongoose.set("strictQuery", false);
-// // mongoose.set("useNewUrlParser",true);
+mongoose.set("strictQuery", false);
 
-// main().catch((err) => console.log(err));
 
-// async function main() {
-// 	await mongoose.connect("mongodb+srv://admin-naveen:Kkavn425@cluster0.hvrkrmt.mongodb.net/health-hist");
-// 	console.log("Connected");
-// }
+main().catch((err) => console.log(err));
+
+async function main() {
+	await mongoose.connect("mongodb+srv://admin-naveen:Kkavn425@cluster0.hvrkrmt.mongodb.net/health-hist");
+	console.log("Connected");
+}
 
 
 const loginSchema = {
@@ -48,34 +48,79 @@ app.get("/",function(req,res){
     res.render("home");
 });
 
+app.get("/Dashboard",function(req,res){
+    res.render("Dashboard");
+});
 
-// app.post("/",function(req,res){
-//     const email1 = req.body.email;
-//     const password1 = req.body.password;
+app.get("/SignUp",function(req,res){
+    res.render("SignUp",{passcode : ""});
+});
 
-//     const newlogindetail = new logindetail({
-//         email : email1,
-//         password : password1
-//     })    
-//     // newlogindetail.save();
-
-// }); 
-
+app.post("/SignUp",function(req,res){
+    const email2 = req.body.email;
+    const password2 = req.body.password;
+    const re_password = req.body.re_password;
+    // console.log(email);
+    logindetail.findOne({email : email2},function(err,foundemail){
+        if(!err){
+            if(!foundemail){
+                if(password2 != re_password){
+                    res.render("SignUp",{passcode : "Password and re-password are not same"});
+                }
+                else{
+                    const email1 = new logindetail({
+                        email : email2,
+                        password : password2,
+                    });
+                    // const email1 = new logindetail(email);
+                    email1.save();
+                    console.log(email2);
+                    res.redirect("/LogIn");
+                }
+            }
+            else{
+                // console.log(email);
+                res.redirect("/LogIn");
+            }
+        }
+        else{
+            console.log(err);
+        }
+    })
+});
 app.get("/LogIn",function(req,res){
     res.render("LogIn");
 });
 
-app.get("/SignUp",function(req,res){
-    res.render("SignUp");
-});
+app.post("/LogIn",function(req,res){
+    const email2 = req.body.email;
+    const password2 = req.body.password;
+    logindetail.findOne({email : email2},function(err,foundemail){
+        if(!err){
+            if(!foundemail){
+                res.render("SignUp", {passcode : ""});
+            }
+            else{
+                if(foundemail.password === password2) {
+                    res.redirect("/Dashboard");
+                }
+                else{
+                    res.render("SignUp", {passcode : ""});
+                }
+            }
+        }
+        else{
+            console.log(err);
+        }
+    })
+})
+
 
 app.get("/",function(req,res){
     res.render("home");
 });
 
-app.get("/Dashboard",function(req,res){
-    res.render("Dashboard");
-});
+
 
 app.get("/Department",function(req,res){
     res.render("Department");
