@@ -49,7 +49,13 @@ app.get("/",function(req,res){
 });
 
 app.get("/Dashboard",function(req,res){
-    res.render("Dashboard");
+    res.render("Dashboard",{
+        name : "NIL",
+        email : "NIL",
+        phone : "NIL",
+        date : "NIL",
+        time : "NIL"
+    });
 });
 
 app.get("/SignUp",function(req,res){
@@ -134,6 +140,52 @@ app.get("/Appointment",function(req,res){
     res.render("Appointment");
 });
 
+
+const appoiDetail = {
+    name : String,
+    phone : String,
+    email : String,
+    date : Date,
+    time : String,
+    complain : String
+}
+
+const appointment_detail = new mongoose.model("appointment_detail", appoiDetail);
+
+app.post("/Appointment", function(req,res){
+    const fullname = req.body.full_name;
+    const phone = req.body.phone;
+    const email = req.body.email;
+    const date = req.body.appintment_date;
+    const time = req.body.timing;
+    const symptoms = req.body.diseases;
+
+    appointment_detail.findOne({email : email}, function(err,founddetail){
+        if(!err){
+                const detail1 = new appointment_detail({
+                    name : fullname,
+                    phone : phone,
+                    email : email,
+                    date : date,
+                    time : time,
+                    complain : symptoms
+                });
+                detail1.save();
+                console.log("app");
+                res.render("Dashboard",{
+                    name : fullname,
+                    phone : phone,
+                    email : email,
+                    date : date,
+                    time : time,
+                });
+        }
+        else{
+            console.log(err);
+        }
+    })
+
+})
 const PORT = process.env.PORT || 3000 ;
 app.listen(PORT,function(req,res){
     console.log(`port ok on ${PORT}`);
