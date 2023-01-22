@@ -58,7 +58,7 @@ a{
     /* width: auto;  */
     position: relative;
     background-image: url("../images/content-image.jpg");
-    background-size:1279px 450px ;
+    background-size:100% auto ;
     background-repeat: no-repeat;
     /* filter: blur(1px); */
   /* -webkit-filter: blur(8px); */
@@ -409,11 +409,11 @@ a:hover {
 
   #text-area{
     height: 140px;
-    width: 382px;
+    width: 100%;
   }
 
   #submit-app{
-    width: 382px;
+    width: 100%;
   }
 
   .department{
