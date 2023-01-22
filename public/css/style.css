@@ -53,7 +53,7 @@ a{
 
 .content{
     /* border: 2px solid red; */
-    height: 450px;
+    height: 84vh;
     display: flex;  
     /* width: auto;  */
     position: relative;
