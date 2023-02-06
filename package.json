@@ -2,9 +2,10 @@
   "name": "health_hist",
   "version": "1.0.0",
   "description": "project",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "start":"node"
   },
   "author": "naveen",
   "license": "ISC",
